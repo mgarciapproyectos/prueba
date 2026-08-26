@@ -1,0 +1,159 @@
+/* Stage + phone frame + launcher */
+.stage {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+.phone {
+  position: relative;
+  width: var(--phone-w);
+  height: var(--phone-h);
+  max-height: calc(100dvh - 40px);
+  background: #fff;
+  border-radius: 44px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.5), 0 0 0 10px #17181b, 0 0 0 12px #3a3d42;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.statusbar {
+  flex: 0 0 auto;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px 0 30px;
+  font-size: 14px;
+  font-weight: 700;
+  background: #fff;
+  position: relative;
+  z-index: 30;
+}
+.sb-icons { display: flex; gap: 5px; align-items: center; }
+.home-indicator {
+  position: absolute;
+  bottom: 7px; left: 50%;
+  transform: translateX(-50%);
+  width: 134px; height: 5px;
+  border-radius: 3px;
+  background: #111;
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* Variant label + controls outside phone */
+.stage-side {
+  position: fixed;
+  top: 16px; left: 16px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.stage-side a, .stage-side button {
+  display: inline-block;
+  background: rgba(255,255,255,.08);
+  color: #e6e6e6;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  text-decoration: none;
+  text-align: left;
+}
+.stage-side a:hover, .stage-side button:hover { background: rgba(255,255,255,.16); }
+.variant-tag {
+  color: #9aa0a8;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 0 2px 4px;
+}
+
+/* Launcher (index) */
+.launcher {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 20px;
+  color: #fff;
+}
+.launcher h1 { font-size: 26px; font-weight: 800; }
+.launcher p.sub { color: #9aa0a8; font-size: 14px; max-width: 520px; text-align: center; line-height: 1.5; }
+.launch-cards { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+.launch-card {
+  width: 300px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 16px;
+  padding: 26px 24px;
+  color: #fff;
+  text-decoration: none;
+  transition: transform .15s ease, background .15s ease;
+}
+.launch-card:hover { transform: translateY(-3px); background: rgba(255,255,255,.1); }
+.launch-card .lc-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  background: #fff; color: #111;
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.launch-card h2 { font-size: 18px; margin-bottom: 8px; }
+.launch-card p { color: #b9bec6; font-size: 13px; line-height: 1.5; }
+
+/* ===== Responsive: móvil real (Maze) =====
+   En pantallas táctiles pequeñas la app llena el viewport:
+   sin bisel, sin statusbar simulada, sin controles laterales. */
+@media (max-width: 560px) {
+  .stage { padding: 0; align-items: stretch; }
+  .phone {
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .stage-side { display: none; }
+}
+/* Desktop con ventana baja: el teléfono se encoge en alto (max-height ya lo cubre),
+   solo aplanamos el radio para que no se corte el contenido superior */
+@media (min-width: 561px) and (max-height: 720px) {
+  .stage { padding: 12px 16px; }
+  .phone { border-radius: 24px; }
+}
+@media (max-width: 560px) {
+  .statusbar { display: none; }
+  .home-indicator { display: none; }
+  .chat-inputbar { padding-bottom: max(14px, env(safe-area-inset-bottom)); }
+  .chat-header { padding-top: max(14px, env(safe-area-inset-top)); }
+  .launcher { gap: 24px; padding: 24px 16px; }
+  .launch-card { width: 100%; max-width: 340px; }
+}
+
+/* Toast */
+.toast {
+  position: absolute;
+  left: 50%; bottom: 110px;
+  transform: translateX(-50%) translateY(8px);
+  background: #111; color: #fff;
+  font-size: 13px;
+  padding: 10px 18px;
+  border-radius: 100px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 90;
+  white-space: nowrap;
+}
+.toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }

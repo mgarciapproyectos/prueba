@@ -1,0 +1,44 @@
+/* LEPTON · figma-cursor — design tokens (Figma / Homecenter) */
+:root {
+  --ink: #111111;
+  --text-2: #5c5c5c;
+  --text-3: #8a8a8a;
+  --line: #dddddd;
+  --line-soft: #ebebeb;
+  --bg-soft: #f2f2f2;
+  --bg-body: #f7f7f7;
+  --bg-card: #ffffff;
+  --bg-canvas: #2b2e33;
+  --bubble-user: #2f2f2f;
+
+  --blue: #0057b8;
+  --blue-soft: #eaf2fb;
+  --green: #1c8c4b;
+  --green-soft: #e7f5ec;
+  --red: #b82c2c;
+  --red-soft: #f9ebeb;
+
+  --r-pill: 100px;
+  --r-btn: 4px;
+  --r-card: 12px;
+  --r-input: 10px;
+  --r-sheet: 24px;
+
+  --fs-hero: 24px;
+  --fs-h2: 18px;
+  --fs-body: 15px;
+  --fs-sm: 13px;
+  --fs-xs: 12px;
+  --fs-2xs: 11px;
+  --fs-3xs: 10px;
+
+  --font: 'Inter', -apple-system, sans-serif;
+  --phone-w: 390px;
+  --phone-h: 844px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: var(--font); color: var(--ink); background: var(--bg-canvas); }
+button { font-family: var(--font); cursor: pointer; border: none; background: none; color: inherit; }
+input, textarea { font-family: var(--font); color: var(--ink); }
+img { max-width: 100%; }

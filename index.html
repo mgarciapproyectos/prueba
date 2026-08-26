@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LEPTON · Elegir prototipo · Maze</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/launcher.css" />
+</head>
+<body class="launch-page">
+
+  <header class="launch-top">
+    <div class="launch-logo">
+      <div class="launch-logo-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="launch-logo-text">
+        <strong>LEPTON</strong>
+        <span>de Homecenter</span>
+      </div>
+    </div>
+    <button type="button" class="launch-help" onclick="alert('Pregunta al moderador de la sesión si tienes dudas sobre qué prototipo abrir.')">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M6.2 6.1a1.8 1.8 0 0 1 3.5.7c0 1.2-1.8 1.5-1.8 2.6M8 11.8v.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      ¿Dudas?
+    </button>
+  </header>
+
+  <main class="launcher">
+
+    <section class="hero-card">
+      <svg class="hero-robot" viewBox="0 0 88 88" fill="none" aria-hidden="true">
+        <rect x="22" y="28" width="44" height="38" rx="12" fill="#f2f2f2" stroke="#111" stroke-width="2"/>
+        <circle cx="36" cy="44" r="4" fill="#111"/>
+        <circle cx="52" cy="44" r="4" fill="#111"/>
+        <path d="M38 54h12" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+        <rect x="36" y="14" width="16" height="10" rx="4" fill="#f2f2f2" stroke="#111" stroke-width="2"/>
+        <path d="M14 36l8-4M74 36l-8-4" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+        <path d="M58 8l6-4 4 6" stroke="#111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1>¡Hola! Soy Lepton</h1>
+      <p class="lead">Tu asistente para elegir y cortar tus tableros</p>
+    </section>
+
+    <section class="how-card" aria-label="Antes de empezar">
+      <h2>Antes de empezar</h2>
+      <div class="how-list">
+        <div class="how-item">
+          <span class="num">1</span>
+          <p>Confirma con el moderador si tu sesión es <strong>Prueba 1</strong> o <strong>Prueba 2</strong>.</p>
+          <span class="how-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4h12v9H6l-3 2V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <div class="how-item">
+          <span class="num">2</span>
+          <p>Dentro de esa prueba, abre la variante indicada: <strong>A (panel inferior)</strong> o <strong>B (chat)</strong>.</p>
+          <span class="how-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="5" width="6" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/><rect x="10" y="5" width="6" height="8" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
+          </span>
+        </div>
+        <div class="how-item">
+          <span class="num">3</span>
+          <p>Completa la tarea que aparece en pantalla.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prueba 1 -->
+    <section class="test-panel test-panel--1" aria-labelledby="t1-title">
+      <div class="test-panel-head">
+        <span class="tp-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="2" stroke="#fff" stroke-width="1.4"/><path d="M6 6h6M6 9h6M6 12h4" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </span>
+        <div>
+          <h2 id="t1-title">Prueba 1 · Selección de tablero</h2>
+          <div class="tp-sub">Compara y elige tu tablero</div>
+        </div>
+      </div>
+      <div class="test-panel-body">
+        <p class="test-intro">Selecciona el tablero café para tu mueble de TV y compara precios entre las opciones disponibles.</p>
+        <div class="task-pill">
+          <span class="task-tag">Tarea en Maze</span>
+          Nogal $191.900 · Roble $234.900
+        </div>
+        <div class="variant-grid">
+          <a class="variant-card variant-card--a" href="ab1-sheet.html">
+            <div class="vc-top">
+              <span class="vc-badge">A</span>
+              <span class="vc-label">Panel inferior</span>
+            </div>
+            <h3>Bottom sheet</h3>
+            <p class="vc-desc">Panel desde abajo para características y comparación de precios.</p>
+            <div class="vc-preview">
+              <div class="bar short"></div>
+              <div class="bar mid"></div>
+              <div class="sheet"></div>
+            </div>
+            <p class="vc-flow">Chat → panel → comparación de precios</p>
+            <span class="vc-btn">Abrir prototipo →</span>
+          </a>
+          <a class="variant-card variant-card--b" href="ab1-chat.html">
+            <div class="vc-top">
+              <span class="vc-badge">B</span>
+              <span class="vc-label">Todo en el chat</span>
+            </div>
+            <h3>Conversación paso a paso</h3>
+            <p class="vc-desc">Material, espesor, color y dimensión como mensajes en el hilo.</p>
+            <div class="vc-preview vc-preview--chat">
+              <div class="bubble"></div>
+              <div class="bubble right"></div>
+              <div class="bubble"></div>
+            </div>
+            <p class="vc-flow">Material → espesor → color → dimensión</p>
+            <span class="vc-btn">Abrir prototipo →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prueba 2 -->
+    <section class="test-panel test-panel--2" aria-labelledby="t2-title">
+      <div class="test-panel-head">
+        <span class="tp-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 14V4M6 14V7M10 14V2M14 14V9" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+        <div>
+          <h2 id="t2-title">Prueba 2 · Ingreso de medidas</h2>
+          <div class="tp-sub">Ingresa las medidas de tu pieza</div>
+        </div>
+      </div>
+      <div class="test-panel-body">
+        <p class="test-intro">Tablero ya seleccionado: Melamina Nogal Ceniza · Tablemac · 2440×1220 mm.</p>
+        <div class="task-pill">
+          <span class="task-tag">Tarea en Maze</span>
+          Pieza 120 × 100 cm · cantidad 1
+        </div>
+        <div class="variant-grid">
+          <a class="variant-card variant-card--a" href="ab2-sheet.html">
+            <div class="vc-top">
+              <span class="vc-badge">A</span>
+              <span class="vc-label">Panel inferior</span>
+            </div>
+            <h3>Formulario en panel</h3>
+            <p class="vc-desc">Ancho, Alto y Cantidad en un bottom sheet sticky.</p>
+            <div class="vc-preview">
+              <div class="bar mid"></div>
+              <div class="sheet"></div>
+            </div>
+            <p class="vc-flow">Chat → formulario en panel → confirmar</p>
+            <span class="vc-btn">Abrir prototipo →</span>
+          </a>
+          <a class="variant-card variant-card--b" href="ab2-inline.html">
+            <div class="vc-top">
+              <span class="vc-badge">B</span>
+              <span class="vc-label">Todo en el chat</span>
+            </div>
+            <h3>Formulario en el chat</h3>
+            <p class="vc-desc">Tarjeta deslizable en el hilo; carrusel si hay varias piezas.</p>
+            <div class="vc-preview vc-preview--chat">
+              <div class="bubble"></div>
+              <div class="bubble" style="width:90%;height:22px"></div>
+            </div>
+            <p class="vc-flow">Chat → tarjeta de medidas → confirmar</p>
+            <span class="vc-btn">Abrir prototipo →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="tip-card">
+      <span class="tip-icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="5" y="2" width="8" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M7 14h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </span>
+      <p>En móvil la app ocupa toda la pantalla — ideal para sesiones Maze. Mismo contenido en todas las variantes; solo cambia dónde interactúas.</p>
+      <div class="tip-phone" aria-hidden="true"></div>
+    </footer>
+
+  </main>
+</body>
+</html>

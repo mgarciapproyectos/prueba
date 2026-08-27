@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function afterContext() {
   await Chat.bot(COPY.bridge, { ms: 900 });
-  // Abre al terminar la escritura (+ pausa breve) o a los 30 s como fallback
+  guidedReply('Abre el panel inferior para ver las opciones. También puedes escribirme.');
   setTimeout(tryOpenCfgSheet, 1200);
   setTimeout(tryOpenCfgSheet, 30000);
 }
@@ -20,9 +20,10 @@ function tryOpenCfgSheet() {
 
 function showReopenChips(which) {
   Chat.chips([
-    { label: 'Mostrar recomendación', action: 'showReco', value: which === 'price' ? 'price' : 'cfg', primary: true },
+    { label: 'Mostrar recomendación', action: 'showReco', value: which === 'price' ? 'price' : 'cfg' },
     { label: 'Ver características', action: 'showReco', value: 'cfg' }
   ]);
+  guidedReply('Toca uno de los botones de arriba para reabrir el panel.');
 }
 
 Actions.showReco = v => {
@@ -55,6 +56,7 @@ function renderCfgSheet() {
 
 function openCfgSheet() {
   S.cfgOpened = true;
+  guidedReply('Completa tu selección en el panel inferior.');
   Actions.cfgPick = v => {
     const [field, val] = v.split(':');
     S.cfg[field] = field === 'thickness' ? parseInt(val, 10) : val;
@@ -88,6 +90,7 @@ function openCfgSheet() {
 
 function openPriceSheet() {
   S.chosenRef = null;
+  guidedReply('Elige un tablero en el panel inferior con «Elegir».');
 
   const render = () => {
     const sh = Sheet.top;

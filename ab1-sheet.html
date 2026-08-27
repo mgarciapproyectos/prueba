@@ -41,10 +41,13 @@
 
       <div class="chat-inputbar">
         <div class="inputbar-tip" id="inputHint"></div>
-        <div class="input-pill">
-          <button class="ib-ic" id="sendHit" type="button"></button>
-          <input id="chatInput" placeholder="Escribe tu respuesta aquí…" autocomplete="off" />
-          <span class="ib-ic" id="icScan"></span>
+        <div class="inputbar-row">
+          <div class="input-pill">
+            <button class="ib-ic" id="sendHit" type="button" aria-label="Buscar"></button>
+            <input id="chatInput" placeholder="Escribe tu respuesta aquí…" autocomplete="off" enterkeyhint="send" />
+            <span class="ib-ic" id="icScan"></span>
+          </div>
+          <button class="send-btn" id="sendBtn" type="button" aria-label="Enviar mensaje" disabled></button>
         </div>
       </div>
 
@@ -60,6 +63,7 @@
   <script src="js/ui/sheet.js"></script>
   <script src="js/ui/render.js"></script>
   <script src="js/ui/bootstrap.js"></script>
+  <script src="js/flows/guided.js"></script>
   <script src="js/flows/ab1-shared.js"></script>
   <script src="js/flows/ab1-sheet.js"></script>
 </body>

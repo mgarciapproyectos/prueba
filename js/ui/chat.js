@@ -1,6 +1,7 @@
 const Chat = {
   _min: 0,
   onSend: null,
+  persistentSend: false,
   get body() { return document.getElementById('chatBody'); },
 
   stamp() {
@@ -54,7 +55,7 @@ const Chat = {
     const eyebrow = opts.eyebrow ? `<div class="chips-eyebrow">${opts.eyebrow}</div>` : '';
     const html = items.map(i => {
       const sw = i.swatch ? `<span class="swatch" style="background:${i.swatch}"></span>` : '';
-      const cls = ['chip', i.primary ? 'is-primary' : '', i.disabled ? 'is-disabled' : ''].filter(Boolean).join(' ');
+      const cls = ['chip', i.disabled ? 'is-disabled' : ''].filter(Boolean).join(' ');
       return `<button class="${cls}" data-action="${i.action}" data-value="${i.value ?? i.label}">${sw}${i.label}</button>`;
     }).join('');
     return this.append(this.el(`<div class="chips-block">${eyebrow}<div class="chips-row">${html}</div></div>`));
@@ -65,18 +66,55 @@ const Chat = {
     if (btn) btn.classList.add('is-selected');
   },
 
-  /* Chip elegido → quita opciones del hilo y deja solo la burbuja de usuario */
   commitChip(btn, label) {
-    btn.closest('.chips-block')?.remove();
+    const block = btn.closest('.chips-block');
+    if (block) {
+      block.querySelectorAll('.chip').forEach(c => c.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+    }
+    block?.remove();
     if (label) this.user(label);
   },
 
-  setInput({ placeholder, hint, onSend } = {}) {
+  clearChips() {
+    this.body.querySelectorAll('.chips-block').forEach(el => el.remove());
+  },
+
+  stopInput() {
+    this.persistentSend = false;
+    this.onSend = null;
+    this.updateSendBtn();
+  },
+
+  setInput({ placeholder, hint, onSend, persistent } = {}) {
     const inp = document.getElementById('chatInput');
     if (placeholder !== undefined) inp.placeholder = placeholder;
     this.onSend = onSend || null;
+    this.persistentSend = !!persistent && !!onSend;
     const hintEl = document.getElementById('inputHint');
-    if (hintEl) hintEl.textContent = hint || '';
+    if (hintEl && hint !== undefined) hintEl.textContent = hint || '';
+    this.updateSendBtn();
+  },
+
+  setDone(placeholder = 'Tarea finalizada') {
+    this.persistentSend = false;
+    this.onSend = null;
+    const inp = document.getElementById('chatInput');
+    inp.placeholder = placeholder;
+    inp.value = '';
+    const hintEl = document.getElementById('inputHint');
+    if (hintEl) hintEl.textContent = '';
+    this.updateSendBtn();
+  },
+
+  updateSendBtn() {
+    const btn = document.getElementById('sendBtn');
+    const inp = document.getElementById('chatInput');
+    if (!btn || !inp) return;
+    const active = !!this.onSend;
+    const hasText = inp.value.trim().length > 0;
+    btn.disabled = !active || !hasText;
+    btn.classList.toggle('is-ready', active && hasText);
   },
 
   sendCurrent() {
@@ -85,7 +123,8 @@ const Chat = {
     if (!text || !this.onSend) return;
     inp.value = '';
     const fn = this.onSend;
-    this.onSend = null;
+    if (!this.persistentSend) this.onSend = null;
+    this.updateSendBtn();
     fn(text);
   }
 };

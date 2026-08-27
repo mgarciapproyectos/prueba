@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function showInlineForm() {
   S2.resetPieces();
   let activeIndex = 0;
+  guidedReply('Ingresa las medidas en el formulario y toca «Confirmar pieza».');
 
   const getWrap = () => Chat.body.querySelector('.js-inline-pieces');
 
@@ -66,6 +67,7 @@ function showInlineForm() {
     S2.pieces = PieceList.syncFromCarousel(root);
     wrap.classList.add('is-done');
     wrap.querySelectorAll('button, input').forEach(el => { el.disabled = true; });
+    Chat.stopInput();
     Chat.user(PieceList.confirmLabel(S2.pieces));
     await t2Complete(S2.pieces);
   };

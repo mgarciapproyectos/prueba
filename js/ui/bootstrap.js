@@ -15,7 +15,14 @@ function bindShell() {
   document.getElementById('icStar').innerHTML = Icon.star;
   document.getElementById('sendHit').innerHTML = Icon.search;
   document.getElementById('icScan').innerHTML = Icon.scan;
-  document.getElementById('sendHit')?.addEventListener('click', () => Chat.sendCurrent());
+  const sendBtn = document.getElementById('sendBtn');
+  if (sendBtn) {
+    sendBtn.innerHTML = Icon.send;
+    sendBtn.addEventListener('click', () => Chat.sendCurrent());
+  }
+  const chatInput = document.getElementById('chatInput');
+  if (chatInput) chatInput.addEventListener('input', () => Chat.updateSendBtn());
+  Chat.updateSendBtn();
 }
 
 document.addEventListener('click', e => {

@@ -10,10 +10,7 @@ const S2 = {
 
 async function t2Start(onMeasuresSent) {
   await Chat.bot(COPY.t2Ask);
-  Chat.setInput({
-    placeholder: 'Escribe las medidas de tu pieza…',
-    onSend: text => t2UserMeasures(text, onMeasuresSent)
-  });
+  guidedFree(text => t2UserMeasures(text, onMeasuresSent));
 }
 
 async function t2UserMeasures(text, onMeasuresSent) {
@@ -39,6 +36,6 @@ async function t2Complete(pieces) {
     { wide: true }
   );
   Chat.append(Chat.el(Render.taskDone()));
-  Chat.setInput({ placeholder: 'Tarea finalizada', onSend: null });
+  Chat.setDone();
   toast('Tarea completada');
 }

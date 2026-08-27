@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function openMeasureSheet() {
   S2.resetPieces();
+  guidedReply('Ingresa las medidas en el panel inferior y toca «Confirmar pieza».');
 
   const renderPieces = () => {
     const root = Sheet.top.querySelector('.js-pieces');
@@ -34,6 +35,7 @@ function openMeasureSheet() {
     const root = Sheet.top.querySelector('.js-pieces');
     S2.pieces = PieceList.syncFromDOM(root);
     Sheet.close();
+    Chat.stopInput();
     Chat.user(PieceList.confirmLabel(S2.pieces));
     await t2Complete(S2.pieces);
   };

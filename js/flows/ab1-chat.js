@@ -10,13 +10,19 @@ window.addEventListener('DOMContentLoaded', () => {
 async function afterContext() {
   await Chat.bot(COPY.materialChoice, { ms: 900 });
   Chat.chips([
-    { label: 'Melamina', action: 'material', value: 'melamina', primary: true },
+    { label: 'Melamina', action: 'material', value: 'melamina' },
     { label: 'Triplex enchapado', action: 'material', value: 'triplex' }
   ]);
+  guidedChoice({
+    nudge: '¿Melamina o triplex? Cuéntame cuál prefieres o elige arriba.',
+    resolve: t => /melamina|mdp/i.test(t) ? 'melamina' : /triplex|enchapado/i.test(t) ? 'triplex' : null,
+    onResolved: v => Actions.material(v, null)
+  });
 }
 
 Actions.material = async (v, btn) => {
-  Chat.commitChip(btn, v === 'melamina' ? 'Melamina' : 'Triplex enchapado');
+  if (btn) Chat.commitChip(btn, v === 'melamina' ? 'Melamina' : 'Triplex enchapado');
+  else Chat.user(v === 'melamina' ? 'Melamina' : 'Triplex enchapado');
   S.cfg.material = 'melamina';
   if (v === 'triplex') {
     await Chat.bot('El triplex enchapado lo manejamos bajo pedido. Para este proyecto sigamos con melamina, que tenemos disponible de inmediato. 😉');
@@ -29,13 +35,22 @@ Actions.material = async (v, btn) => {
   Chat.chips(T1.thickness.map(t => ({
     label: t + ' mm',
     action: 'thickness',
-    value: t,
-    primary: t === 18
+    value: t
   })));
+  guidedChoice({
+    nudge: '¿15 mm o 18 mm? Escríbeme o elige arriba.',
+    resolve: t => {
+      if (/15|quince/.test(t)) return '15';
+      if (/18|dieciocho/.test(t)) return '18';
+      return null;
+    },
+    onResolved: v => Actions.thickness(v, null)
+  });
 };
 
 Actions.thickness = async (v, btn) => {
-  Chat.commitChip(btn, v + ' mm');
+  if (btn) Chat.commitChip(btn, v + ' mm');
+  else Chat.user(v + ' mm');
   S.cfg.thickness = parseInt(v, 10);
   await Chat.bot(
     `Con melamina de ${v} mm, los tonos café disponibles son:` +
@@ -46,13 +61,24 @@ Actions.thickness = async (v, btn) => {
     label: c.name === 'Nogal ceniza' ? 'Nogal Ceniza' : c.name,
     action: 'color',
     value: c.id,
-    swatch: c.swatch,
-    primary: c.id === 'nogal'
+    swatch: c.swatch
   })));
+  guidedChoice({
+    nudge: '¿Roble, Nogal Ceniza o Wengue? Escríbeme o elige arriba.',
+    resolve: t => {
+      const s = t.toLowerCase();
+      if (/nogal|ceniza/.test(s)) return 'nogal';
+      if (/roble/.test(s)) return 'roble';
+      if (/wengue|wenge/.test(s)) return 'wengue';
+      return null;
+    },
+    onResolved: v => Actions.color(v, null)
+  });
 };
 
 Actions.color = async (v, btn) => {
-  Chat.commitChip(btn, T1.colorName(v));
+  if (btn) Chat.commitChip(btn, T1.colorName(v));
+  else Chat.user(T1.colorName(v));
   S.cfg.color = v;
   await Chat.bot(
     `${T1.colorName(v)}, excelente elección 👌` +
@@ -65,13 +91,25 @@ Actions.color = async (v, btn) => {
   Chat.chips(T1.dims.map(d => ({
     label: d.label,
     action: 'dimension',
-    value: d.id,
-    primary: d.id === 'd1'
+    value: d.id
   })));
+  guidedChoice({
+    nudge: '¿Cuál dimensión prefieres? Escríbeme o elige arriba.',
+    resolve: t => {
+      const s = t.replace(/\s/g, '');
+      if (/2440.?1220|1220.?2440/.test(s)) return 'd1';
+      if (/2440.?1830|1830.?2440/.test(s)) return 'd2';
+      if (/1830.?2500|2500.?1830/.test(s)) return 'd3';
+      if (/común|comun|estándar|standard|2440/.test(t.toLowerCase())) return 'd1';
+      return null;
+    },
+    onResolved: v => Actions.dimension(v, null)
+  });
 };
 
 Actions.dimension = async (v, btn) => {
-  Chat.commitChip(btn, T1.dimLabel(v));
+  if (btn) Chat.commitChip(btn, T1.dimLabel(v));
+  else Chat.user(T1.dimLabel(v));
   S.cfg.dimension = v;
   await Chat.bot(
     `Perfecto, ya tenemos tu selección:` +
@@ -90,9 +128,11 @@ Actions.dimension = async (v, btn) => {
     ).join('')}</div>` +
     Render.feedbackRow()
   );
+  guidedReply('Toca «Elegir» en uno de los tableros, o dime cuál prefieres.');
 };
 
 Actions.refPick = async v => {
+  Chat.stopInput();
   Chat.user(`Elegir · ${T1.colorName(v).split(' ')[0]}`);
   await t1Complete(S.cfg, v);
 };

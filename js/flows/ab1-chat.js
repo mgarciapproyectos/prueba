@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function afterContext() {
   Screen.set('material');
-  await Chat.bot(COPY.materialChoice, { ms: 900 });
+  await Chat.bot(COPY.t1MaterialIntro, { ms: 900 });
   Chat.chips([
     { label: 'Melamina', action: 'material', value: 'melamina' },
     { label: 'Triplex enchapado', action: 'material', value: 'triplex' }

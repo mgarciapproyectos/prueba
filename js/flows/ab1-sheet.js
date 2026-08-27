@@ -9,23 +9,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function afterContext() {
   Screen.set('config');
+  await Chat.bot(COPY.t1MaterialIntro, { ms: 900 });
   setTimeout(() => {
     if (S.cfgOpened || Sheet.isOpen) return;
     guidedReply('Abre el panel inferior para ver las opciones. También puedes escribirme.');
     openCfgSheet();
-  }, 3000);
-  await Chat.bot(COPY.bridge, { ms: 900 });
+  }, 3500);
 }
 
 function showReopenChips(which) {
+  Chat.clearChips();
   Chat.chips([
-    { label: 'Mostrar recomendación', action: 'showReco', value: which === 'price' ? 'price' : 'cfg' },
-    { label: 'Ver características', action: 'showReco', value: 'cfg' }
+    { label: 'Ver recomendación', action: 'showReco', value: which === 'price' ? 'price' : 'cfg' }
   ]);
-  guidedReply('Toca uno de los botones de arriba para reabrir el panel.');
+  guidedReply('Toca el botón de arriba para reabrir el panel.');
 }
 
 Actions.showReco = v => {
+  Chat.clearChips();
+  Chat.stopInput();
   if (v === 'price') openPriceSheet();
   else openCfgSheet();
 };
@@ -54,6 +56,7 @@ function renderCfgSheet() {
 }
 
 function openCfgSheet() {
+  Chat.clearChips();
   S.cfgOpened = true;
   Screen.set('config');
   guidedReply('Completa tu selección en el panel inferior.');
@@ -72,10 +75,10 @@ function openCfgSheet() {
         <button class="sh-back" data-action="cfgBack">${Icon.back}</button>
         <div class="sheet-title">
           <h3>Para tu mueble de TV</h3>
-          <div class="sh-sub">Te recomiendo estas características</div>
+          <div class="sh-sub">Te recomiendo estas características preseleccionadas</div>
         </div>
       </div>
-      <div class="js-groups" style="display:flex;flex-direction:column;gap:18px"></div>
+      <div class="js-groups" style="display:flex;flex-direction:column;gap:16px"></div>
     </div>
     <div class="sheet-footer">
       <div class="sf-price"><div class="sf-label">Precios desde</div><div class="sf-value js-price"></div></div>
@@ -89,6 +92,7 @@ function openCfgSheet() {
 }
 
 function openPriceSheet() {
+  Chat.clearChips();
   S.chosenRef = null;
   Screen.set('precio');
   guidedReply('Elige un tablero en el panel inferior con «Elegir».');

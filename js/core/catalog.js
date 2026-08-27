@@ -1,21 +1,15 @@
 /* LEPTON figma-cursor · catálogo y copy compartido (A/B Test 1 & 2) */
 
 const COPY = {
-  bridge:
-    '¡Perfecto! Para un mueble de TV de interior, el tono café con veta visible le da un aire cálido y elegante. Te muestro las opciones que mejor se ajustan a tu proyecto.',
-  materialChoice:
+  t1UserPrompt: 'Quiero un tablero de madera cafe para armar un mueble de TV.',
+  t1MaterialIntro:
     '¡Perfecto! Para un mueble de TV de interior, el tono café con veta visible le da un aire muy cálido y elegante.' +
     '<p>Para que elijas bien, de los materiales que manejamos, estos dos encajan con lo que buscas:</p>' +
     '<p><span class="b">Triplex enchapado</span> → la veta es real, única y natural. Pero necesita barniz o aceite para protegerlo.</p>' +
     '<p><span class="b">MDP melamínico texturado</span> → imita la veta, es resistente a rayones y no requiere mantenimiento. Ideal para un mueble de uso diario.</p>' +
-    '<p><span class="b">Mi recomendación:</span> si quieres algo práctico y duradero, ve por el melamínico. Si buscas esa veta 100% auténtica, el triplex es tu opción.</p>' +
-    '<p>¿Cuál prefieres?</p>',
+    '<p>Te voy a mostrar las opciones que mejor se ajustan a tu proyecto:</p>',
   welcome:
     '¡Hola! Soy tu asistente de tableros. Te ayudo a elegir y dimensionar el tablero perfecto para tu proyecto. ¿Ya sabes qué tablero necesitas?',
-  measureConfirm:
-    '¡Me encanta esa elección! Antes de recomendarte materiales, quiero confirmar las medidas que mencionaste:' +
-    '<p>📐 <span class="b">120 cm (alto) × 100 cm (ancho)</span></p>' +
-    '<p>¿Estas son las medidas de la pieza que necesitas, o son las medidas del mueble armado? Esto es importante para calcular bien las piezas.</p>',
   t2Ask:
     'Ahora vamos con las medidas de tu pieza. ¿Cuánto mide la pieza que necesitas cortar?',
   t2Confirm:

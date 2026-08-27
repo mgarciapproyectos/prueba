@@ -14,7 +14,6 @@ function bindShell() {
   document.getElementById('icBack').innerHTML = Icon.back;
   document.getElementById('icStar').innerHTML = Icon.star;
   document.getElementById('sendHit').innerHTML = Icon.search;
-  document.getElementById('icScan').innerHTML = Icon.scan;
   const sendBtn = document.getElementById('sendBtn');
   if (sendBtn) {
     sendBtn.innerHTML = Icon.send;

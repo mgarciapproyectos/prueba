@@ -8,7 +8,7 @@ const COPY = {
     '<p>Para que elijas bien, de los materiales que manejamos, estos dos encajan con lo que buscas:</p>' +
     '<p><span class="b">Triplex enchapado</span> → la veta es real, única y natural. Pero necesita barniz o aceite para protegerlo.</p>' +
     '<p><span class="b">MDP melamínico texturado</span> → imita la veta, es resistente a rayones y no requiere mantenimiento. Ideal para un mueble de uso diario.</p>' +
-    '<p>Mi recomendación: si quieres algo práctico y duradero, ve por el melamínico. Si buscas esa veta 100% auténtica, el triplex es tu opción.</p>' +
+    '<p><span class="b">Mi recomendación:</span> si quieres algo práctico y duradero, ve por el melamínico. Si buscas esa veta 100% auténtica, el triplex es tu opción.</p>' +
     '<p>¿Cuál prefieres?</p>',
   welcome:
     '¡Hola! Soy tu asistente de tableros. Te ayudo a elegir y dimensionar el tablero perfecto para tu proyecto. ¿Ya sabes qué tablero necesitas?',

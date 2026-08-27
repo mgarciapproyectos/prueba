@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 async function afterContext() {
+  Screen.set('material');
   await Chat.bot(COPY.materialChoice, { ms: 900 });
   Chat.chips([
     { label: 'Melamina', action: 'material', value: 'melamina' },
@@ -32,6 +33,7 @@ Actions.material = async (v, btn) => {
     `<p>15 mm → ligero, ideal para muebles de TV<br>18 mm → más firme, aguanta más peso</p>` +
     `<p>¿Cuál prefieres? Te recomiendo 18 mm si tu TV es de más de 20 kg</p>`
   );
+  Screen.set('espesor');
   Chat.chips(T1.thickness.map(t => ({
     label: t + ' mm',
     action: 'thickness',
@@ -57,6 +59,7 @@ Actions.thickness = async (v, btn) => {
     `<ul><li><span class="b">Roble</span> (claro, vetas suaves)</li><li><span class="b">Nogal Ceniza</span> (medio, veta marcada)</li><li><span class="b">Wengue</span> (oscuro, elegante)</li></ul>` +
     `<p>¿Cuál se acerca más al café que tienes en mente?</p>`
   );
+  Screen.set('color');
   Chat.chips(T1.colors.map(c => ({
     label: c.name === 'Nogal ceniza' ? 'Nogal Ceniza' : c.name,
     action: 'color',
@@ -88,6 +91,7 @@ Actions.color = async (v, btn) => {
     `● <span class="b">1830 × 2500 mm</span> → formato XL</p>` +
     `<p>¿Cuál se ajusta mejor a tu mueble de TV?</p>`
   );
+  Screen.set('dimension');
   Chat.chips(T1.dims.map(d => ({
     label: d.label,
     action: 'dimension',
@@ -116,6 +120,7 @@ Actions.dimension = async (v, btn) => {
     `<ul><li>Material: Melamina</li><li>Espesor: ${S.cfg.thickness} mm</li><li>Color: ${T1.colorName(S.cfg.color)}</li><li>Dimensiones: ${T1.dimLabel(v)}</li></ul>` +
     `<p>Estos son los tableros que tenemos disponibles con esas características:</p>`
   );
+  Screen.set('tableros');
   const refs = T1.refs(S.cfg);
   Chat.block(
     `<div class="reco-head">${Icon.puzzle} Te recomiendo estos tableros:</div>` +

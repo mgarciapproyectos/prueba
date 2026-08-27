@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 async function afterContext() {
+  Screen.set('config');
   await Chat.bot(COPY.bridge, { ms: 900 });
   guidedReply('Abre el panel inferior para ver las opciones. También puedes escribirme.');
   setTimeout(tryOpenCfgSheet, 1200);
@@ -56,6 +57,7 @@ function renderCfgSheet() {
 
 function openCfgSheet() {
   S.cfgOpened = true;
+  Screen.set('config');
   guidedReply('Completa tu selección en el panel inferior.');
   Actions.cfgPick = v => {
     const [field, val] = v.split(':');
@@ -90,6 +92,7 @@ function openCfgSheet() {
 
 function openPriceSheet() {
   S.chosenRef = null;
+  Screen.set('precio');
   guidedReply('Elige un tablero en el panel inferior con «Elegir».');
 
   const render = () => {

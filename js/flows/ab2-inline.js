@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 function showInlineForm() {
   S2.resetPieces();
   let activeIndex = 0;
+  Screen.set('formulario');
   guidedReply('Ingresa las medidas en el formulario y toca «Confirmar pieza».');
 
   const getWrap = () => Chat.body.querySelector('.js-inline-pieces');

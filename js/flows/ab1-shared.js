@@ -30,6 +30,7 @@ function t1GuidedMeasure(onDone) {
 }
 
 async function t1Context(onDone) {
+  Screen.init('inicio');
   await Chat.bot(COPY.welcome);
   Chat.chips([{ label: 'Necesito ayuda', action: 't1Help' }]);
   guidedFree(t => t1Describe(t, onDone));
@@ -42,6 +43,7 @@ async function t1Context(onDone) {
 
 async function t1Describe(text, onDone) {
   Chat.user(text);
+  Screen.set('medidas');
   await Chat.bot(COPY.measureConfirm);
   Chat.chips([
     { label: 'Son las medidas de la pieza', action: 't1Measure', value: 'pieza' },
@@ -70,5 +72,6 @@ async function t1Complete(cfg, refColorId) {
   );
   Chat.append(Chat.el(Render.taskDone()));
   Chat.setDone();
+  Screen.set('completado');
   toast('Tarea completada');
 }

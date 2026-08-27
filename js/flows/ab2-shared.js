@@ -9,7 +9,9 @@ const S2 = {
 };
 
 async function t2Start(onMeasuresSent) {
+  Screen.init('inicio');
   await Chat.bot(COPY.t2Ask);
+  Screen.set('medidas');
   guidedFree(text => t2UserMeasures(text, onMeasuresSent));
 }
 
@@ -37,5 +39,6 @@ async function t2Complete(pieces) {
   );
   Chat.append(Chat.el(Render.taskDone()));
   Chat.setDone();
+  Screen.set('completado');
   toast('Tarea completada');
 }

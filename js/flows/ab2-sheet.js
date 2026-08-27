@@ -29,6 +29,7 @@ function openMeasureSheet() {
   if (Sheet.isOpen) return;
 
   S2Sheet.advancing = false;
+  Screen.set('formulario');
   guidedReply('Ingresa las medidas en el panel inferior y toca «Confirmar pieza».');
 
   const renderPieces = () => {

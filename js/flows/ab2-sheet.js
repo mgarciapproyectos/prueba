@@ -1,12 +1,34 @@
 /* A/B Test 2 · Variante A — Formulario en bottom sheet */
 
+const S2Sheet = { advancing: false };
+
 window.addEventListener('DOMContentLoaded', () => {
   bindShell();
   t2Start(openMeasureSheet);
 });
 
+function showMeasureReopen() {
+  Chat.chips([{ label: 'Ingresar medidas', action: 'sheetReopen' }]);
+  guidedChoice({
+    nudge: 'Toca «Ingresar medidas» arriba o escríbeme «abrir panel» para continuar.',
+    resolve: t => /panel|medidas|abrir|formulario|de nuevo|otra vez/i.test(t) ? 'reopen' : null,
+    onResolved: () => {
+      Chat.user('Abrir panel');
+      openMeasureSheet();
+    }
+  });
+}
+
+Actions.sheetReopen = (_v, btn) => {
+  Chat.commitChip(btn, 'Ingresar medidas');
+  Chat.stopInput();
+  openMeasureSheet();
+};
+
 function openMeasureSheet() {
-  S2.resetPieces();
+  if (Sheet.isOpen) return;
+
+  S2Sheet.advancing = false;
   guidedReply('Ingresa las medidas en el panel inferior y toca «Confirmar pieza».');
 
   const renderPieces = () => {
@@ -14,7 +36,11 @@ function openMeasureSheet() {
     root.innerHTML = PieceList.renderCards(S2.pieces, 'sheetRemovePiece');
   };
 
-  Actions.sheetBack = () => Sheet.close();
+  Actions.sheetBack = () => {
+    const root = Sheet.top?.querySelector('.js-pieces');
+    if (root) S2.pieces = PieceList.syncFromDOM(root);
+    Sheet.close();
+  };
 
   Actions.sheetAddPiece = () => {
     const root = Sheet.top.querySelector('.js-pieces');
@@ -34,6 +60,7 @@ function openMeasureSheet() {
   Actions.sheetConfirm = async () => {
     const root = Sheet.top.querySelector('.js-pieces');
     S2.pieces = PieceList.syncFromDOM(root);
+    S2Sheet.advancing = true;
     Sheet.close();
     Chat.stopInput();
     Chat.user(PieceList.confirmLabel(S2.pieces));
@@ -55,7 +82,12 @@ function openMeasureSheet() {
       <button type="button" class="add-piece" data-action="sheetAddPiece">${Icon.plus} Agregar pieza</button>
       <button type="button" class="btn btn-primary" data-action="sheetConfirm">Confirmar pieza</button>
     </div>`,
-    { tall: true });
+    {
+      tall: true,
+      onClose: () => {
+        if (!S2Sheet.advancing) showMeasureReopen();
+      }
+    });
 
   renderPieces();
 }

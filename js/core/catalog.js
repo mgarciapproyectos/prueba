@@ -29,8 +29,8 @@ const T1 = {
     { id: 'wengue', name: 'Wengue', swatch: '#3b2a20' }
   ],
   materials: [
-    { id: 'mdf', name: 'MDF' },
-    { id: 'melamina', name: 'Melamina' }
+    { id: 'melamina', name: 'Melamina' },
+    { id: 'triplex', name: 'Triplex enchapado' }
   ],
   thickness: [15, 18, 20],
   dims: [
@@ -41,32 +41,56 @@ const T1 = {
   defaults: { color: 'nogal', material: 'melamina', thickness: 18, dimension: 'd1' },
   base: { nogal: 191900, roble: 234900, wengue: 249900 },
   thickDelta: { 15: -22000, 18: 0, 20: 18000 },
-  matDelta: { melamina: 0, mdf: -12000 },
+  matDelta: { melamina: 0, triplex: 0 },
 
   price(cfg, colorId) {
     const f = this.dims.find(d => d.id === cfg.dimension).f;
-    const raw = (this.base[colorId] + this.thickDelta[cfg.thickness] + this.matDelta[cfg.material]) * f;
+    const mat = cfg.material === 'triplex' ? 'melamina' : cfg.material;
+    const raw = (this.base[colorId] + this.thickDelta[cfg.thickness] + (this.matDelta[mat] || 0)) * f;
     return Math.round(raw / 100) * 100;
   },
 
   colorName(id) { return this.colors.find(c => c.id === id)?.name || id; },
   matName(id) { return this.materials.find(m => m.id === id)?.name || id; },
+  matLabel(id) {
+    return this.materials.find(m => m.id === id)?.name || id;
+  },
+  boardTypeLabel(cfg) {
+    return cfg.material === 'triplex' ? 'Triplex enchapado' : 'MDP Melamina';
+  },
+  boardName(cfg, colorId) {
+    const color = this.colorName(colorId).split(' ')[0];
+    return cfg.material === 'triplex'
+      ? `Triplex enchapado · ${color}`
+      : `MDP Melamina · ${color}`;
+  },
   dimLabel(id) { return this.dims.find(d => d.id === id).label; },
 
+  brands: [
+    { id: 'tablemac', name: 'Tablemac', delta: 0, off: 15 },
+    { id: 'masisa', name: 'Masisa', delta: 43000, off: 10 }
+  ],
+
   refs(cfg) {
-    const other = cfg.color === 'nogal' ? 'roble' : 'nogal';
-    const mk = (colorId, off) => {
-      const price = this.price(cfg, colorId);
+    const colorId = cfg.color;
+    const base = this.price(cfg, colorId);
+    return this.brands.map((b, i) => {
+      const price = Math.round((base + b.delta) / 100) * 100;
       return {
-        id: colorId,
-        name: `MDP Melamina · ${this.colorName(colorId).split(' ')[0]}`,
-        brand: 'Tablemac',
+        id: b.id,
+        colorId,
+        name: this.boardName(cfg, colorId),
+        brand: b.name,
         price,
-        off,
-        oldPrice: Math.round(price / (1 - off / 100) / 100) * 100
+        off: b.off,
+        oldPrice: Math.round(price / (1 - b.off / 100) / 100) * 100,
+        recommended: i === 0
       };
-    };
-    return [mk(cfg.color, 15), mk(other, 10)];
+    });
+  },
+
+  ref(cfg, brandId) {
+    return this.refs(cfg).find(r => r.id === brandId) || this.refs(cfg)[0];
   }
 };
 

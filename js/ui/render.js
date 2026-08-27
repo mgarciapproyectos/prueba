@@ -8,13 +8,14 @@ const Render = {
   prodCard(p, opts = {}) {
     const off = p.off ? `<span class="pc-off">-${p.off}%</span><span class="pc-tagline">Precio Internet</span>` : '';
     const old = p.oldPrice ? `<span class="pc-old">${Format.money(p.oldPrice)}</span>` : '';
-    return `<div class="prod-card${opts.selected ? ' is-selected' : ''}">
+    const selected = !!opts.selected;
+    return `<div class="prod-card">
       <div class="pc-img">${Icon.img}</div>
       <div class="pc-body">
         <div><div class="pc-name">${p.name}</div><div class="pc-brand">${p.brand}</div></div>
         <div class="pc-pricing">${off}</div>
         <div class="pc-pricing"><span class="pc-price">${Format.money(p.price)}${p.unit || ''}</span>${old}</div>
-        <button class="pc-cta" data-action="${opts.action}" data-value="${p.id}">Elegir</button>
+        <button class="pc-cta${selected ? ' is-selected' : ''}" data-action="${opts.action}" data-value="${p.id}">${selected ? 'Seleccionado' : 'Elegir'}</button>
         <button class="pc-link" data-action="toast" data-value="Detalle de producto (demo)">Ver detalles</button>
       </div>
     </div>`;

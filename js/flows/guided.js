@@ -6,7 +6,7 @@ function guidedReply(nudge) {
     persistent: true,
     onSend: async text => {
       Chat.user(text);
-      await Chat.bot(nudge);
+      await Chat.bot(nudge, { charMs: 8 });
     }
   });
 }
@@ -24,7 +24,7 @@ function guidedChoice({ nudge, resolve, onResolved }) {
         await onResolved(value);
         return;
       }
-      await Chat.bot(nudge);
+      await Chat.bot(nudge, { charMs: 8 });
     }
   });
 }

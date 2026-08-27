@@ -28,18 +28,69 @@ const Chat = {
     return node;
   },
 
+  _wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  },
+
+  _htmlTokens(html) {
+    const tokens = [];
+    const re = /(<[^>]+>)|([^<]+)/g;
+    let m;
+    while ((m = re.exec(html))) tokens.push(m[1] || m[2]);
+    return tokens;
+  },
+
+  async _streamHtml(el, html, opts = {}) {
+    const plainLen = html.replace(/<[^>]+>/g, '').length;
+    const charMs = opts.charMs ?? Math.max(10, Math.min(20, Math.round(1400 / Math.max(plainLen, 1))));
+    const step = plainLen > 280 ? 3 : plainLen > 140 ? 2 : 1;
+    let out = '';
+
+    el.classList.add('is-streaming');
+    for (const token of this._htmlTokens(html)) {
+      if (token.startsWith('<')) {
+        out += token;
+        el.innerHTML = out;
+        this.scroll();
+        continue;
+      }
+      for (let i = 0; i < token.length; i += step) {
+        out += token.slice(i, i + step);
+        el.innerHTML = out;
+        if (i % (step * 4) === 0) this.scroll();
+        await this._wait(charMs);
+      }
+    }
+    el.classList.remove('is-streaming');
+    el.innerHTML = html;
+    this.scroll();
+  },
+
   async typing(ms = 700) {
     const t = this.append(this.el('<div class="typing"><i></i><i></i><i></i></div>'));
-    await new Promise(r => setTimeout(r, ms));
+    await this._wait(ms);
     t.remove();
   },
 
   async bot(html, opts = {}) {
     if (!opts.instant) await this.typing(opts.ms || 650);
     const wide = opts.wide ? ' msg-wide' : '';
-    return this.append(this.el(
-      `<div class="msg msg-bot${wide}"><div class="bubble">${html}<span class="stamp">${this.stamp()}</span></div></div>`
+    const msg = this.append(this.el(
+      `<div class="msg msg-bot${wide}">` +
+      `<div class="bubble"><div class="js-stream"></div><span class="stamp is-pending">${this.stamp()}</span></div></div>`
     ));
+    const target = msg.querySelector('.js-stream');
+    const stamp = msg.querySelector('.stamp');
+
+    if (opts.stream === false || opts.instant) {
+      target.innerHTML = html;
+    } else {
+      await this._streamHtml(target, html, opts);
+    }
+
+    stamp.classList.remove('is-pending');
+    this.scroll();
+    return msg;
   },
 
   user(html, opts = {}) {

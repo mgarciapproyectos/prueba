@@ -9,14 +9,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function afterContext() {
   Screen.set('config');
+  setTimeout(() => {
+    if (S.cfgOpened || Sheet.isOpen) return;
+    guidedReply('Abre el panel inferior para ver las opciones. También puedes escribirme.');
+    openCfgSheet();
+  }, 3000);
   await Chat.bot(COPY.bridge, { ms: 900 });
-  guidedReply('Abre el panel inferior para ver las opciones. También puedes escribirme.');
-  setTimeout(tryOpenCfgSheet, 1200);
-  setTimeout(tryOpenCfgSheet, 30000);
-}
-
-function tryOpenCfgSheet() {
-  if (!S.cfgOpened && !Sheet.isOpen) openCfgSheet();
 }
 
 function showReopenChips(which) {
@@ -98,20 +96,25 @@ function openPriceSheet() {
   const render = () => {
     const sh = Sheet.top;
     const refs = T1.refs(S.cfg);
-    const card = r => `
-      <div class="prod-card${S.chosenRef === r.id ? ' is-selected' : ''}" style="flex-direction:row">
+    const card = r => {
+      const selected = S.chosenRef === r.id;
+      return `
+      <div class="prod-card" style="flex-direction:row">
         <div class="pc-img" style="flex:0 0 116px;height:auto">${Icon.img}</div>
         <div class="pc-body" style="flex:1">
           <div><div class="pc-name">${r.name}</div><div class="pc-brand">${r.brand}</div></div>
           <div class="pc-pricing"><span class="pc-off">-${r.off}%</span><span class="pc-tagline">Precio Internet</span></div>
           <div class="pc-pricing"><span class="pc-price">${Format.money(r.price)}</span><span class="pc-old">${Format.money(r.oldPrice)}</span></div>
-          <button class="pc-cta" data-action="refPick" data-value="${r.id}">Elegir</button>
+          <button class="pc-cta${selected ? ' is-selected' : ''}" data-action="refPick" data-value="${r.id}">${selected ? 'Seleccionado' : 'Elegir'}</button>
           <button class="pc-link" data-action="toast" data-value="Detalle de producto (demo)">Ver detalles</button>
         </div>
       </div>`;
+    };
     sh.querySelector('.js-refs').innerHTML =
       `<div class="reco-head">${Icon.puzzle} Te recomiendo este tablero:</div>` + card(refs[0]) +
-      `<div class="alt-label">También disponible en:</div>` + refs.slice(1).map(card).join('');
+      (refs.length > 1
+        ? `<div class="alt-label">Otras marcas disponibles:</div>` + refs.slice(1).map(card).join('')
+        : '');
 
     const continueBtn = sh.querySelector('[data-action="refContinue"]');
     if (S.chosenRef) {
@@ -131,9 +134,10 @@ function openPriceSheet() {
   Actions.refBack = () => { S.advancing = true; Sheet.close(); openCfgSheet(); };
   Actions.refContinue = async () => {
     if (!S.chosenRef) return;
+    const chosen = T1.ref(S.cfg, S.chosenRef);
     S.advancing = true;
     Sheet.close();
-    Chat.user(`Continuar con Tablemac · ${T1.colorName(S.chosenRef).split(' ')[0]}`);
+    Chat.user(`Continuar con ${chosen.brand} · ${T1.colorName(S.cfg.color).split(' ')[0]}`);
     await t1Complete(S.cfg, S.chosenRef);
   };
 

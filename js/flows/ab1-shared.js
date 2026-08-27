@@ -57,18 +57,18 @@ async function t1Describe(text, onDone) {
   };
 }
 
-async function t1Complete(cfg, refColorId) {
-  const price = T1.price(cfg, refColorId);
+async function t1Complete(cfg, brandId) {
+  const ref = T1.ref(cfg, brandId);
   await Chat.bot(
     `✅ <span class="b">¡Excelente elección! Tu tablero quedó seleccionado:</span>` +
     Render.specTable([
-      ['Tablero', `MDP Melamina · ${T1.colorName(refColorId).split(' ')[0]}`],
-      ['Marca', 'Tablemac'],
+      ['Tablero', ref.name],
+      ['Marca', ref.brand],
       ['Espesor', cfg.thickness + ' mm'],
       ['Dimensiones', T1.dimLabel(cfg.dimension)],
-      ['Precio', Format.money(price)]
+      ['Precio', Format.money(ref.price)]
     ]),
-    { wide: true }
+    { wide: true, stream: false }
   );
   Chat.append(Chat.el(Render.taskDone()));
   Chat.setDone();

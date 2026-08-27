@@ -48,6 +48,18 @@
 .bubble ul { margin: 8px 0 8px 18px; }
 .bubble li + li { margin-top: 4px; }
 .bubble .b { font-weight: 700; }
+.js-stream.is-streaming::after {
+  content: '▍';
+  display: inline-block;
+  margin-left: 1px;
+  animation: stream-cursor .9s step-end infinite;
+  opacity: .7;
+}
+@keyframes stream-cursor {
+  0%, 100% { opacity: .15; }
+  50% { opacity: .85; }
+}
+.msg .stamp.is-pending { visibility: hidden; }
 
 /* Wide bot message that carries a card (full width) */
 .msg-wide { max-width: 100%; align-self: stretch; }

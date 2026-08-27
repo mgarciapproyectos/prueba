@@ -35,7 +35,7 @@ async function t2Complete(pieces) {
 
   await Chat.bot(
     `✅ <span class="b">Medidas confirmadas</span>` + Render.specTable(rows),
-    { wide: true }
+    { wide: true, stream: false }
   );
   Chat.append(Chat.el(Render.taskDone()));
   Chat.setDone();

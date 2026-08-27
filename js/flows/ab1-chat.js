@@ -24,10 +24,7 @@ async function afterContext() {
 Actions.material = async (v, btn) => {
   if (btn) Chat.commitChip(btn, v === 'melamina' ? 'Melamina' : 'Triplex enchapado');
   else Chat.user(v === 'melamina' ? 'Melamina' : 'Triplex enchapado');
-  S.cfg.material = 'melamina';
-  if (v === 'triplex') {
-    await Chat.bot('El triplex enchapado lo manejamos bajo pedido. Para este proyecto sigamos con melamina, que tenemos disponible de inmediato. 😉');
-  }
+  S.cfg.material = v;
   await Chat.bot(
     `Me gusta. Para ese material manejamos estos espesores:` +
     `<p>15 mm → ligero, ideal para muebles de TV<br>18 mm → más firme, aguanta más peso</p>` +
@@ -55,7 +52,7 @@ Actions.thickness = async (v, btn) => {
   else Chat.user(v + ' mm');
   S.cfg.thickness = parseInt(v, 10);
   await Chat.bot(
-    `Con melamina de ${v} mm, los tonos café disponibles son:` +
+    `Con ${T1.matLabel(S.cfg.material).toLowerCase()} de ${v} mm, los tonos café disponibles son:` +
     `<ul><li><span class="b">Roble</span> (claro, vetas suaves)</li><li><span class="b">Nogal Ceniza</span> (medio, veta marcada)</li><li><span class="b">Wengue</span> (oscuro, elegante)</li></ul>` +
     `<p>¿Cuál se acerca más al café que tienes en mente?</p>`
   );
@@ -85,7 +82,7 @@ Actions.color = async (v, btn) => {
   S.cfg.color = v;
   await Chat.bot(
     `${T1.colorName(v)}, excelente elección 👌` +
-    `<p>Para MDP Melamina ${T1.colorName(v)} de ${S.cfg.thickness} mm, estas son las dimensiones de tablero disponibles:</p>` +
+    `<p>Para ${T1.boardTypeLabel(S.cfg)} ${T1.colorName(v)} de ${S.cfg.thickness} mm, estas son las dimensiones de tablero disponibles:</p>` +
     `<p>● <span class="b">2440 × 1220 mm</span> → la más común<br>` +
     `● <span class="b">2440 × 1830 mm</span> → más ancho<br>` +
     `● <span class="b">1830 × 2500 mm</span> → formato XL</p>` +
@@ -117,7 +114,7 @@ Actions.dimension = async (v, btn) => {
   S.cfg.dimension = v;
   await Chat.bot(
     `Perfecto, ya tenemos tu selección:` +
-    `<ul><li>Material: Melamina</li><li>Espesor: ${S.cfg.thickness} mm</li><li>Color: ${T1.colorName(S.cfg.color)}</li><li>Dimensiones: ${T1.dimLabel(v)}</li></ul>` +
+    `<ul><li>Material: ${T1.matLabel(S.cfg.material)}</li><li>Espesor: ${S.cfg.thickness} mm</li><li>Color: ${T1.colorName(S.cfg.color)}</li><li>Dimensiones: ${T1.dimLabel(v)}</li></ul>` +
     `<p>Estos son los tableros que tenemos disponibles con esas características:</p>`
   );
   Screen.set('tableros');
@@ -138,6 +135,7 @@ Actions.dimension = async (v, btn) => {
 
 Actions.refPick = async v => {
   Chat.stopInput();
-  Chat.user(`Elegir · ${T1.colorName(v).split(' ')[0]}`);
+  const ref = T1.ref(S.cfg, v);
+  Chat.user(`Elegir · ${ref.brand}`);
   await t1Complete(S.cfg, v);
 };
